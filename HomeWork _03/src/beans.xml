@@ -1,17 +1,20 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<beans xmlns = "http://www.springframework.org/schema/beans"
-       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean id="cl" class="app.staff.customer.Client">
         <property name="manager" ref="man"/>
-        <property name="pizzaMaker" ref="pz_m"/>
-        <property name="deliverer" ref="del"/>
+
     </bean>
 
     <bean id="del" class="app.staff.fabric.Deliverer"/>
-    <bean id="man" class="app.staff.fabric.Manager"/>
-    <bean id="pz_m" class="app.staff.fabric.PizzaMaker"/>
+    <bean id="man" class="app.staff.fabric.Manager">
+        <property name="pizzaMaker" ref="pz_m"/>
+    </bean>
+    <bean id="pz_m" class="app.staff.fabric.PizzaMaker">
+        <property name="deliverer" ref="del"/>
+    </bean>
 
 </beans>

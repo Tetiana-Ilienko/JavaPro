@@ -7,8 +7,7 @@ import app.staff.fabric.PizzaMaker;
 public class Client {
 
     private Manager manager;
-    private PizzaMaker pizzaMaker;
-    private Deliverer deliverer;
+
 
     public Manager getManager() {
         return manager;
@@ -18,26 +17,10 @@ public class Client {
         this.manager = manager;
     }
 
-    public PizzaMaker getPizzaMaker() {
-        return pizzaMaker;
-    }
-
-    public void setPizzaMaker(PizzaMaker pizzaMaker) {
-        this.pizzaMaker = pizzaMaker;
-    }
-
-    public Deliverer getDeliverer() {
-        return deliverer;
-    }
-
-    public void setDeliverer(Deliverer deliverer) {
-        this.deliverer = deliverer;
-    }
 
     public void order(){
         System.out.println("Клиент заказывает пиццу!");
         manager.work();
-        pizzaMaker.work();
-        deliverer.work();
+
     }
 }
