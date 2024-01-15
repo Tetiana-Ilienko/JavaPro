@@ -34,7 +34,7 @@ public class CatRepository implements CrudRepository<Cat>{
 
     @Override
     public Cat getById(int id) {
-        return null;
+        return cats.get(id);
     }
 
     @Override

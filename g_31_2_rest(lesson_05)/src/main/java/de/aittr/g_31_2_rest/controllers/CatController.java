@@ -34,16 +34,16 @@ public class CatController {
 
 //    // 1 способ Кота по id
     //  http://12.34.56.78:8080/cats/5
-//    @GetMapping("/{id}")
-//    public Cat getById(@PathVariable int id){
-//        return service.getById(id);
-//    }
+    @GetMapping("/{id}")
+    public Cat getById(@PathVariable int id){
+        return service.getById(id);
+    }
 
 
     // 2 способ получения кота по ИД - передача ИД как параметра запроса
     // http://12.34.56.78:8080/cats/get?id=3&color=Gray
-    @GetMapping("/get")
-    public Cat getById(@RequestParam int id){
-        return service.getById(id);
-    }
+//    @GetMapping("/get")
+//    public Cat getById(@RequestParam int id){
+//        return service.getById(id);
+//    }
 }
