@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/parrots")
+@RequestMapping("/parrots") // эндпоинт
 public class ParrotController {
     private ParrotService service;
 
@@ -16,7 +16,7 @@ public class ParrotController {
     }
 
     // get запрос
-    @GetMapping
+    @GetMapping // отвечает на get - запросы
     public List<Parrot> getAll(){
         return service.getAll();
     }
@@ -29,7 +29,7 @@ public class ParrotController {
 
      // post запрос
      @PostMapping
-     public Parrot save(@RequestBody Parrot parrot){
+     public Parrot save(@RequestBody Parrot parrot){ // пришел json, Spring его преобразовал в объект
         return service.save(parrot);
 
      }

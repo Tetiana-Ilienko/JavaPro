@@ -14,11 +14,22 @@ public class ParrotService {
         this.repository = repository;
     }
 
-    public List<Parrot> getAll(){
+    public List<Parrot> getAll() {
         return repository.getAll();
     }
 
-    public Parrot getById(int id){
-        return repository.getById(id);
+    public Parrot getById(int id) {
+
+            return repository.getById(id);
+
+
+    }
+
+    public Parrot save(Parrot parrot) {
+        return repository.save(parrot);
+    }
+
+    public void deleteById(int id) {
+        repository.deleteBiId(id);
     }
 }

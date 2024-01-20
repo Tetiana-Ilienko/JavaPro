@@ -10,7 +10,8 @@ public class Cat {
     public Cat() {
     }
 
-    public Cat(String color, double weight) {
+    public Cat(int id, String color, double weight) {
+        this.id = id;
         this.color = color;
         this.weight = weight;
     }
