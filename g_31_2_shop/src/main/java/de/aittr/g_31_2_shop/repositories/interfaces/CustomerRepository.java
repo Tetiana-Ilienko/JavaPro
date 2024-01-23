@@ -9,6 +9,6 @@ public interface CustomerRepository {
     Customer save (Customer customer);
     List<Customer> getAll();
     Customer getById(int id);
-    void update(int id);
+    void update(Customer customer);
     void deleteById(int id);
 }

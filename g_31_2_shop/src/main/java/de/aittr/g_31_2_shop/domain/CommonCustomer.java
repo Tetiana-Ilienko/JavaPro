@@ -33,8 +33,19 @@ public class CommonCustomer implements Customer {
     }
 
     @Override
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name=name;
+
     }
 
     @Override
@@ -48,7 +59,7 @@ public class CommonCustomer implements Customer {
     }
 
     @Override
-    public void setCartId(int id) {
+    public void setCart(Cart cart) {
         this.cart=cart;
     }
 
