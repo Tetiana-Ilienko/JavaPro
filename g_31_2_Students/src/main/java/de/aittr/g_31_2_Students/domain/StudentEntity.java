@@ -3,6 +3,8 @@ package de.aittr.g_31_2_Students.domain;
 import de.aittr.g_31_2_Students.domain.interfaces.Student;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "student")
 public class StudentEntity implements Student {
@@ -66,5 +68,28 @@ public class StudentEntity implements Student {
     @Override
     public void setGrade(double grade) {
         this.grade = grade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StudentEntity that)) return false;
+        return getId() == that.getId() && getGroup() == that.getGroup() && Double.compare(that.getGrade(), getGrade()) == 0 && Objects.equals(getName(), that.getName()) && Objects.equals(getSpeciality(), that.getSpeciality());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSpeciality(), getGroup(), getGrade());
+    }
+
+    @Override
+    public String toString() {
+        return "StudentEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", group=" + group +
+                ", grade=" + grade +
+                '}';
     }
 }
