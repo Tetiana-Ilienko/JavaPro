@@ -1,6 +1,6 @@
 package de.aittr.g_31_2_shop.repositories;
 
-import de.aittr.g_31_2_shop.domain.CommonProduct;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonProduct;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.repositories.interfaces.ProductRepository;
 import org.springframework.stereotype.Repository;

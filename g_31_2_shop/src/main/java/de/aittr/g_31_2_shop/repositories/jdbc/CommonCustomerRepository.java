@@ -1,8 +1,8 @@
 package de.aittr.g_31_2_shop.repositories;
 
-import de.aittr.g_31_2_shop.domain.CommonCart;
-import de.aittr.g_31_2_shop.domain.CommonCustomer;
-import de.aittr.g_31_2_shop.domain.CommonProduct;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonCart;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonCustomer;
+import de.aittr.g_31_2_shop.domain.jdbc.CommonProduct;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
