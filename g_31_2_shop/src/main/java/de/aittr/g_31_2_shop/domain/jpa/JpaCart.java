@@ -1,6 +1,7 @@
 package de.aittr.g_31_2_shop.domain.jpa;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
+import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import jakarta.persistence.*;
 
@@ -16,13 +17,47 @@ public class JpaCart implements Cart {
     @Column(name = "id")
     private int id;
 
-    private List<Product> products = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    private JpaCustomer customer;//  прописываем поле, чтобы было видно, кому принадлежит данная корзина
+
+    @ManyToMany
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"), // указываем на таблицу с сущностью, с которой мы работаем
+            inverseJoinColumns = @JoinColumn(name = "product_id")// связь ко второй таблице
+            //!!!! не наоборот. Важно!
+    )
+    private List<JpaProduct> products = new ArrayList<>();
 
     public JpaCart() {
     }
 
-    public JpaCart(int id) {
+    public JpaCart(int id, List<JpaProduct> products) {
         this.id = id;
+        this.products = products;
+    }
+
+
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(JpaCustomer customer) {
+        this.customer = customer;
+    }
+
+
+
+    @Override
+    public List<Product> getProducts() {
+        return new ArrayList<>(products);
+    }
+
+
+    public void setProducts(List<JpaProduct> products) {
+        this.products = products;
     }
 
     @Override
@@ -35,10 +70,7 @@ public class JpaCart implements Cart {
 
     }
 
-    @Override
-    public List<Product> getProducts() {
-        return products;
-    }
+
 
     @Override
     public void AddProduct(Product product) {
@@ -69,18 +101,19 @@ public class JpaCart implements Cart {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof JpaCart jpaCart)) return false;
-        return getId() == jpaCart.getId() && Objects.equals(getProducts(), jpaCart.getProducts());
+        return getId() == jpaCart.getId() && Objects.equals(getCustomer(), jpaCart.getCustomer()) && Objects.equals(getProducts(), jpaCart.getProducts());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getProducts());
+        return Objects.hash(getId(), getCustomer(), getProducts());
     }
 
     @Override
     public String toString() {
         return "JpaCart{" +
                 "id=" + id +
+                ", customer=" + customer +
                 ", products=" + products +
                 '}';
     }

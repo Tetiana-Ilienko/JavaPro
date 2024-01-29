@@ -13,19 +13,20 @@ public class JpaCustomer implements Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private boolean isActive;
 
     @Column(name = "name")
     private String name;
 
-    //TODO  привязана к другой таблице - как показать связь?
-    private Cart cart;
+    // привязана к другой таблице - показываем связь с другой таблицей
+    @OneToOne(mappedBy = "customer") //  наименование поля, через которое осуществляется связь
+    private JpaCart cart;
 
     public JpaCustomer() {
     }
 
-    public JpaCustomer(int id, boolean isActive, String name, Cart cart) {
+    public JpaCustomer(int id, boolean isActive, String name, JpaCart cart) {
         this.id = id;
         this.isActive = isActive;
         this.name = name;
@@ -40,6 +41,11 @@ public class JpaCustomer implements Customer {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void setCart(Cart cart) {
+        this.cart = (JpaCart) cart;
     }
 
     @Override
@@ -67,11 +73,6 @@ public class JpaCustomer implements Customer {
         return cart;
     }
 
-
-    @Override
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 
     @Override
     public boolean equals(Object o) {

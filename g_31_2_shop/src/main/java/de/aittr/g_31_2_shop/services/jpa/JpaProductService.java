@@ -6,11 +6,10 @@ import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class JpaProductService implements ProductService {
@@ -25,7 +24,8 @@ public class JpaProductService implements ProductService {
     @Override
     public ProductDto save(ProductDto dto) {
         JpaProduct entity = mappingService.mapDtoToJpaProduct(dto);
-        entity.setId(0);
+        entity.setId(0);// передаем 0, чтобы не перезатирать данные, если клиет
+        // пришлет продукт с уже существующим продуктом
         entity = repository.save(entity);
         return mappingService.mapProductEntityToDto(entity);
     }
@@ -34,41 +34,62 @@ public class JpaProductService implements ProductService {
     public List<ProductDto> getAllActiveProducts() {
         return repository.findAll()
                 .stream()
+                .filter(JpaProduct::isActive)
                 .map(p -> mappingService.mapProductEntityToDto(p))
                 .toList();
     }
 
     @Override
     public ProductDto getActiveProductById(int id) {
-        Optional<JpaProduct> product = repository.findById(id);
-        if (product.get().isActive()) {
-            return mappingService.mapProductEntityToDto(product.get());
-        }else {
-            throw new NoSuchElementException();
+        Product product = repository.findById(id).orElse(null);// данный метод
+        // возвращает объект типа Optinal - поэтому надо добавлять метод orElse
+        if (product != null && product.isActive()) {
+            return mappingService.mapProductEntityToDto(product);
         }
+        return null;
     }
 
     @Override
     public void update(ProductDto product) {
-       repository.save(mappingService.mapDtoToJpaProduct(product));
-       //TODO что будет,если поменять id?
+        repository.save(mappingService.mapDtoToJpaProduct(product));
+        // что будет,если поменять id? - дать доступ только админу
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
-       repository.deleteById(id);
+        Product product = repository.findById(id).orElse(null);
+
+        if (product != null && product.isActive()) {
+            product.setActive(false);
+        }
+        //  вариант с ручным запросом
+        // repository.deleteById(id);
 
     }
 
     @Override
+    @jakarta.transaction.Transactional
     public void deleteByName(String name) {
-        repository.deleteByName(name);
+        Product product = repository.findByName(name);
+
+        if (product != null && product.isActive()) {
+            product.setActive(false);
+        }
+        // repository.deleteByName(name);
 
     }
 
     @Override
+    @Transactional
     public void restoreById(int id) {
-        repository.restoreById(id);
+        Product product = repository.findById(id).orElse(null);
+
+        if (product != null && !product.isActive()) {
+            product.setActive(true);
+        }
+
+       // repository.restoreById(id);
 
     }
 

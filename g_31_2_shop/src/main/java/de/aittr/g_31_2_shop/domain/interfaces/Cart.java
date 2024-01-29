@@ -1,5 +1,7 @@
 package de.aittr.g_31_2_shop.domain.interfaces;
 
+import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
+
 import java.util.List;
 
 public interface Cart {

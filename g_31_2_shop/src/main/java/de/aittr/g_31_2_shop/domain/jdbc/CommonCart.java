@@ -2,6 +2,7 @@ package de.aittr.g_31_2_shop.domain.jdbc;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
+import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,11 @@ public class CommonCart implements Cart {
 
     public CommonCart(int id) {
         this.id = id;
+    }
+
+    public CommonCart(int id, List<Product> products) {
+        this.id = id;
+        this.products = products;
     }
 
     @Override

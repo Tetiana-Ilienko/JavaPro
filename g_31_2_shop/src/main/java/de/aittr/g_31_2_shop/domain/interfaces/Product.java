@@ -12,5 +12,6 @@ public interface Product {
     void  setId(int id);
     void setName(String name);
     void setPrice(double price);
+    void setActive(boolean isActive);
 
 }
