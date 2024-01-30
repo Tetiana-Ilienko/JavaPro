@@ -45,7 +45,12 @@ public class JpaCustomer implements Customer {
 
     @Override
     public void setCart(Cart cart) {
-        this.cart = (JpaCart) cart;
+        try {
+            this.cart = (JpaCart) cart;
+        }catch (Exception e){
+            throw new IllegalArgumentException(" В сеттер JpaCustomer передан несовместимый тип корзины");
+        }
+
     }
 
     @Override

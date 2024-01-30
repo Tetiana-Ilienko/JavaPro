@@ -39,7 +39,6 @@ public class JpaCart implements Cart {
     }
 
 
-
     public Customer getCustomer() {
         return customer;
     }
@@ -49,9 +48,9 @@ public class JpaCart implements Cart {
     }
 
 
-
     @Override
     public List<Product> getProducts() {
+        // TODO посмотреть, как будет на практике, потом переделать
         return new ArrayList<>(products);
     }
 
@@ -67,35 +66,51 @@ public class JpaCart implements Cart {
 
     @Override
     public void setId(int id) {
-
+        this.id = id;
     }
-
 
 
     @Override
     public void AddProduct(Product product) {
-
+        try {
+            products.add((JpaProduct) product);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("В корзину JpaCart помещён несовместимый тип продукта!");
+        }
     }
 
     @Override
     public void deleteProduct(int productId) {
-
+        // TODO проверить работу на практике и при необходимости переделать
+        products.removeIf(p -> p.getId() == productId);
     }
 
     @Override
     public void clear() {
-
+        products.clear();
     }
 
     @Override
     public double getTotalPrice() {
-        return 0;
+
+        return products
+                .stream()
+                .filter(p->p.isActive())
+                .mapToDouble(p->p.getPrice())
+                .sum();
     }
+
 
     @Override
     public double getAveragePrice() {
-        return 0;
+        return products
+                .stream()
+                .filter(p->p.isActive())
+                .mapToDouble(p->p.getPrice())
+                .average()
+                .orElse(0);
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -9,9 +9,9 @@ import java.util.Objects;
 public class CartDto {
 
     private int id;
-    private List<Product> products = new ArrayList<>();
+    private List<ProductDto> products = new ArrayList<>();
 
-    public CartDto(int id, List<Product> products) {
+    public CartDto(int id, List<ProductDto> products) {
         this.id = id;
         this.products = products;
     }
@@ -20,7 +20,7 @@ public class CartDto {
         return id;
     }
 
-    public List<Product> getProducts() {
+    public List<ProductDto> getProducts() {
         return products;
     }
 

@@ -1,5 +1,6 @@
 package de.aittr.g_31_2_shop.services.mapping;
 
+import de.aittr.g_31_2_shop.domain.dto.CartDto;
 import de.aittr.g_31_2_shop.domain.dto.CustomerDto;
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Cart;
@@ -14,21 +15,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerMappingService {
+    private CartMappingService cartMappingService;
+
+    public CustomerMappingService(CartMappingService cartMappingService) {
+        this.cartMappingService = cartMappingService;
+    }
 
     public CustomerDto mapCustomerEntityToDto(Customer customer){
 
         int id = customer.getId();
         String name = customer.getName();
-        Cart cart = customer.getCard();
+        CartDto cartDto = cartMappingService.mapCartEntityToDto(customer.getCard());
 
-        return new CustomerDto(id,name,cart);
+        return new CustomerDto(id,name, cartDto);
     }
 
 
     public CommonCustomer mapDtoToCommonCustomer(CustomerDto customer){
         int id = customer.getId();
         String name = customer.getName();
-        Cart cart = customer.getCart();
+        Cart cart = cartMappingService.mapDtoToCommonCart(customer.getCart());
         return new CommonCustomer(id, true,name,cart);
 
 
@@ -37,8 +43,8 @@ public class CustomerMappingService {
     public JpaCustomer mapDtoToJpaCustomer(CustomerDto customer){
         int id = customer.getId();
         String name = customer.getName();
-        Cart cart = customer.getCart();
-        return new JpaCustomer(id, true,name,(JpaCart) cart);
+        JpaCart cart = cartMappingService.mapDtoToJpaCart(customer.getCart());
+        return new JpaCustomer(id, true,name, cart);
 
     }
 
