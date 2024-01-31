@@ -2,6 +2,7 @@ package de.aittr.g_31_2_shop.domain.jpa;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ public class JpaProduct implements Product {
     @Column(name = "id")
     private int id;
     @Column(name = "name")
+    @NotNull
     private String name;
     @Column(name = "price")
     private double price;

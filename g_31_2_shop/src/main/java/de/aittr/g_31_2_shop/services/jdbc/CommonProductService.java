@@ -7,7 +7,6 @@ import de.aittr.g_31_2_shop.enams.Status;
 import de.aittr.g_31_2_shop.repositories.interfaces.ProductRepository;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -26,8 +25,9 @@ public class CommonProductService implements ProductService {
 
     // контроллер передает на сохранение, репозиторий - записывает, присваеивает id и отдает обратно
     @Override
-    public ProductDto save(ProductDto product) { // на вход мы принимает Dto
-         //конвентируем его в CommonProduct
+    public ProductDto save(ProductDto product) {
+        // на вход мы принимает Dto
+        //конвентируем его в CommonProduct
         CommonProduct commonProduct = mappingService.mapDtoToCommonProduct(product);
         // передаем сконвертируемый продукт в репозиторий
         Product saveProduct = repository.save(commonProduct);

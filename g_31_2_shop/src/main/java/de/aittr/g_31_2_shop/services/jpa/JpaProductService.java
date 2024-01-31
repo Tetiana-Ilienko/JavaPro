@@ -3,6 +3,8 @@ package de.aittr.g_31_2_shop.services.jpa;
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
+import de.aittr.g_31_2_shop.exeption_handling.exceptions.FourthTestException;
+import de.aittr.g_31_2_shop.exeption_handling.exceptions.ThirdTestException;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
@@ -23,11 +25,16 @@ public class JpaProductService implements ProductService {
 
     @Override
     public ProductDto save(ProductDto dto) {
-        JpaProduct entity = mappingService.mapDtoToJpaProduct(dto);
-        entity.setId(0);// передаем 0, чтобы не перезатирать данные, если клиет
-        // пришлет продукт с уже существующим продуктом
-        entity = repository.save(entity);
-        return mappingService.mapProductEntityToDto(entity);
+        try {
+            JpaProduct entity = mappingService.mapDtoToJpaProduct(dto);
+            entity.setId(0);// передаем 0, чтобы не перезатирать данные, если клиет
+            // пришлет продукт с уже существующим продуктом
+            entity = repository.save(entity);
+            return mappingService.mapProductEntityToDto(entity);
+        }catch (Exception e){
+            throw new FourthTestException(e.getMessage());
+        }
+
     }
 
     @Override
@@ -46,7 +53,9 @@ public class JpaProductService implements ProductService {
         if (product != null && product.isActive()) {
             return mappingService.mapProductEntityToDto(product);
         }
-        return null;
+        // throw new FirstTestException("Продукт с указанным идентификатором отсутствует в базе данных.");
+        // throw new SecondTestException("Продукт с указанным идентификатором отсутствует в базе данных.");
+        throw new ThirdTestException("Продукт с указанным идентификатором отсутствует в базе данных.");
     }
 
     @Override
@@ -89,7 +98,7 @@ public class JpaProductService implements ProductService {
             product.setActive(true);
         }
 
-       // repository.restoreById(id);
+        // repository.restoreById(id);
 
     }
 
