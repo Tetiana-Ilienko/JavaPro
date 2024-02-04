@@ -30,7 +30,7 @@ public class ProductController {
         return service.getAllActiveProducts();
     }
 
-    /** Обработка ошибок первый способ - выкидываем ошибку в контроллере
+    /** Обработка ошибок первый способ - выкидываем ошибку в контроллере*/
 //    @GetMapping("/{id}")
 //    public ProductDto getActiveProductById(@PathVariable int id) {
 //        ProductDto dto =  service.getActiveProductById(id);
@@ -39,7 +39,7 @@ public class ProductController {
 //        }
 //        return dto;
 //    }
-     */
+
 
     @GetMapping("/{id}")
     public ProductDto getActiveProductById(@PathVariable int id) {
@@ -66,13 +66,19 @@ public class ProductController {
         service.restoreById(id);
     }
 
-    /** первый способ создания метода-обработчика в контроллере, где мы ожидаем ошибки*/
 
-    @ExceptionHandler(FirstTestException.class)
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+
+    /** первый способ создания метода-обработчика в контроллере, где мы ожидаем ошибки
+     *  Минус - если в разных контроллерах требуется обрабатывать ошибки одинаково,
+     *  то нам придётся написать один и тот же обработчик в разных контроллерах.
+     *  Плюс - если в разных контроллерах требуется обрабатывать ошибки по-разному,
+     *  то такой подход позволяет нам это сделать.*/
+    @ExceptionHandler(FirstTestException.class)// для Spring
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)// статус ошибки, отправленный клиенту
     public Response handleException(FirstTestException e){
         return new Response(e.getMessage());
     }
+    // метод вызывает сам Spring при возникновении ошибки
 
 
 }

@@ -10,6 +10,8 @@ public class CommonCustomer implements Customer {
     private boolean isActive;
     private String name;
     private Cart cart;
+    private int age;
+    private String email;
 
     public CommonCustomer() {
         this.isActive = true;
@@ -20,6 +22,15 @@ public class CommonCustomer implements Customer {
         this.isActive = isActive;
         this.name = name;
         this.cart = cart;
+    }
+
+    public CommonCustomer(int id, boolean isActive, String name, Cart cart, int age, String email) {
+        this.id = id;
+        this.isActive = isActive;
+        this.name = name;
+        this.cart = cart;
+        this.age = age;
+        this.email = email;
     }
 
     @Override
@@ -63,22 +74,47 @@ public class CommonCustomer implements Customer {
         this.cart=cart;
     }
 
+    @Override
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CommonCustomer that)) return false;
-        return getId() == that.getId() && isActive() == that.isActive() && Objects.equals(getName(), that.getName()) && Objects.equals(cart, that.cart);
+        return getId() == that.getId() && isActive() == that.isActive() && getAge() == that.getAge() && Objects.equals(getName(), that.getName()) && Objects.equals(cart, that.cart) && Objects.equals(getEmail(), that.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), isActive(), getName(), cart);
+        return Objects.hash(getId(), isActive(), getName(), cart, getAge(), getEmail());
     }
 
     @Override
     public String toString() {
-        return String.format("Покупатель: ID - %d,  имя  - %s, активен - %s,содержимое корзины: %n%s",
-                id, name, isActive ? "да" : "нет");
+        return "CommonCustomer{" +
+                "id=" + id +
+                ", isActive=" + isActive +
+                ", name='" + name + '\'' +
+                ", cart=" + cart +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
