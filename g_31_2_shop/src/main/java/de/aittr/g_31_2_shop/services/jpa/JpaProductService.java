@@ -3,13 +3,16 @@ package de.aittr.g_31_2_shop.services.jpa;
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
+import de.aittr.g_31_2_shop.domain.jpa.Task;
 import de.aittr.g_31_2_shop.exeption_handling.exceptions.*;
 import de.aittr.g_31_2_shop.repositories.jpa.JpaProductRepository;
+import de.aittr.g_31_2_shop.scheduling.ScheduleExecutor;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
 import de.aittr.g_31_2_shop.services.mapping.ProductMappingService;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +23,20 @@ public class JpaProductService implements ProductService {
 
     private JpaProductRepository repository;
     private ProductMappingService mappingService;
-    /**  Библиотека  org.apache.logging.log4j */
-    // private Logger logger = LogManager.getLogger(JpaProductService.class);
+
+
     /**
-     * Библиотека org.slf4j
+     * Библиотека  org.apache.logging.log4j
      */
-    private Logger logger = LoggerFactory.getLogger(JpaProductService.class);
+   // private Logger logger = LogManager.getLogger(JpaProductService.class);// создание объекта логера
 
 
+    /**
+     * Библиотека org.slf4j (Создаем объект логера используя другую библиотеку) тут обращаемся к дркгому
+     * классу LoggerFactory. У этой библиотеки нет метода log(), поэтому для логирования используем
+     * второй вариант
+     */
+    //private Logger logger = LoggerFactory.getLogger(JpaProductService.class);
     public JpaProductService(JpaProductRepository repository, ProductMappingService mappingService) {
         this.repository = repository;
         this.mappingService = mappingService;
@@ -49,7 +58,9 @@ public class JpaProductService implements ProductService {
 
     @Override
     public List<ProductDto> getAllActiveProducts() {
-        //здесь будет JoinPoint, сюда будет внедряться вспомогательный код
+        Task task = new Task("Method getAllActiveProducts called");
+        ScheduleExecutor.scheduleAndExecuteTask(task);
+        /**здесь будет JoinPoint, сюда будет внедряться вспомогательный код (АОП, логирование) Before */
         return repository.findAll()
                 .stream()
                 .filter(JpaProduct::isActive)
@@ -59,16 +70,19 @@ public class JpaProductService implements ProductService {
 
     @Override
     public ProductDto getActiveProductById(int id) {
-        /** Первый способ*/
-//        logger.log(Level.INFO, String.format("Запрошен продукт с идентификатором %d",id));
-//        // Внимание! тут пишем только в учебных целях - так в реальных проектах не пишут
+        /** Первый способ (логирование)*/
+        // логирование на уровень инфо
+       // logger.log(Level.INFO, String.format("Запрошен продукт с идентификатором %d", id));
+        /** Внимание! тут пишем только в учебных целях - так в реальных проектах не пишут*/
 //        logger.log(Level.WARN, String.format("Запрошен продукт с идентификатором %d",id));
 //        logger.log(Level.ERROR, String.format("Запрошен продукт с идентификатором %d",id));
 
-        /** Второй способ*/
+        /** Второй способ (логирование) имеем возможность не указывать уровень, а вызывать соответствующий метод*/
 //        logger.info(String.format("Запрошен продукт с идентификатором %d", id));
 //        logger.warn(String.format("Запрошен продукт с идентификатором %d", id));
 //        logger.error(String.format("Запрошен продукт с идентификатором %d", id));
+
+        /** Когда используется АОП - нам нет необходимости засорять наш код дополнительной логикой*/
 
 
         Product product = repository.findById(id).orElse(null);// данный метод
@@ -131,9 +145,11 @@ public class JpaProductService implements ProductService {
 
         if (product != null && !product.isActive()) {
             product.setActive(true);
-        }else {
+        } else {
             throw new ProductUpdateException("Ошибка! Продукт с указанным идентификатором не найден или уже активен.");
         }
+
+        /**здесь будет JoinPoint, сюда будет внедряться вспомогательный код (АОП, логирование) After */
 
         // repository.restoreById(id);
 
@@ -142,14 +158,14 @@ public class JpaProductService implements ProductService {
     // вернуть общее количество активных продуктов в БД
     @Override
     public int getActiveProductCount() {
-         int count = (int) repository.findAll()
+        int count = (int) repository.findAll()
                 .stream()
                 .filter(p -> p.isActive())
                 .count();
-         if(count==0){
-             throw new NoActiveProductsException("");
+        if (count == 0) {
+            throw new NoActiveProductsException("");
 
-         }else return count;
+        } else return count;
     }
 
     @Override
@@ -159,7 +175,7 @@ public class JpaProductService implements ProductService {
                 .filter(p -> p.isActive())
                 .mapToDouble(p -> p.getPrice())
                 .sum();
-        if (totalPrice == 0){
+        if (totalPrice == 0) {
             throw new NoActiveProductsException("Ошибка! Нет активных продуктов для вычисления суммарной стоимости.");
         }
         return totalPrice;
@@ -167,15 +183,15 @@ public class JpaProductService implements ProductService {
 
     @Override
     public double getActiveProductAveragePrice() {
-         OptionalDouble averagePrice = repository.findAll()
+        OptionalDouble averagePrice = repository.findAll()
                 .stream()
                 .filter(p -> p.isActive())
                 .mapToDouble(p -> p.getPrice())
                 .average();
-                //.orElse(0);
-        if(averagePrice.isPresent()){
+        //.orElse(0);
+        if (averagePrice.isPresent()) {
             return averagePrice.getAsDouble();
-        }else {
+        } else {
             throw new NoActiveProductsException("Ошибка! Нет активных продуктов для вычисления средней цены.");
         }
     }

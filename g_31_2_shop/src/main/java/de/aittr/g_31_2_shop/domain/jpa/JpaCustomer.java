@@ -15,7 +15,6 @@ public class JpaCustomer implements Customer {
     @Column(name = "id")
     private int id;
     @Column(name = "is_active")
-    @NotNull
     private boolean isActive;
 
     @Column(name = "name")
@@ -28,7 +27,6 @@ public class JpaCustomer implements Customer {
     private JpaCart cart;
 
     @Column(name = "age")
-    @NotNull
     @Min(5)
     @Max(110)
     private int age;
@@ -70,7 +68,7 @@ public class JpaCustomer implements Customer {
     public void setCart(Cart cart) {
         try {
             this.cart = (JpaCart) cart;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentException(" В сеттер JpaCustomer передан несовместимый тип корзины");
         }
 
