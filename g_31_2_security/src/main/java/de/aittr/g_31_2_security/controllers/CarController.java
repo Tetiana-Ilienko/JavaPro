@@ -15,18 +15,24 @@ public class CarController {
     public CarController(CarService service) {
         this.service = service;
     }
-@GetMapping("/all")
-    public List<Car> getAll(){
-        return  service.getAll();
 
+
+    //  метода доступен всем, включая не зарегистрированных пользователь
+    @GetMapping("/all")
+    public List<Car> getAll() {
+        return service.getAll();
     }
 
+    // метод доступен только зарегистрированным пользователям
     @GetMapping("/by_id/{id}")
-    public Car getById(@PathVariable int id){
+    public Car getById(@PathVariable int id) {
         return service.getBiId(id);
     }
+
+
+    // метод доступен только администраторам
     @PostMapping("/save")
-    public Car save(@RequestBody Car car){
+    public Car save(@RequestBody Car car) {
         return service.save(car);
     }
 }
