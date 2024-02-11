@@ -22,7 +22,7 @@ public class CartMappingService {
     }
 
     public CartDto mapCartEntityToDto(Cart cart) {
-        int id = cart.getId();
+        int id = (cart != null) ? cart.getId() : 0;
 
         List<ProductDto> products = cart.getProducts()
                 .stream()

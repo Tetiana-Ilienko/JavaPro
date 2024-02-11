@@ -50,10 +50,18 @@ public class CommonAdvice {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NotActiveException.class)
+    @ExceptionHandler(NoActiveProductsException.class)
     public ResponseEntity<Response> handleException(NoActiveProductsException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductValidationException.class)
+    public ResponseEntity<Response> handleException(ProductValidationException e) {
+        e.printStackTrace();
+       ValidationResponse response = new ValidationResponse(e.getMessage(),
+               e.getCause().getMessage());
+       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 }

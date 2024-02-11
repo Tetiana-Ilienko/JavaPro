@@ -26,6 +26,8 @@ public class CustomerController {
     public List<CustomerDto> getAll(){
         return service.getAllActiveCustomers();
     }
+
+
     @GetMapping("/{id}")
     public CustomerDto getById(@PathVariable int id){
         return service.getActiveCustomerById(id);

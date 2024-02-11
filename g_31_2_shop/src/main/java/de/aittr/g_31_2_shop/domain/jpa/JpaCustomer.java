@@ -4,6 +4,8 @@ import de.aittr.g_31_2_shop.domain.interfaces.Cart;
 import de.aittr.g_31_2_shop.domain.interfaces.Customer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -35,10 +37,15 @@ public class JpaCustomer implements Customer {
     @NotNull
     private String email;
 
+    private static Logger logger = LoggerFactory.getLogger(JpaCustomer.class);
+
     public JpaCustomer() {
+        logger.info("Запрошен пустой конструктор для JpaCustomer");
     }
 
     public JpaCustomer(int id, boolean isActive, String name, JpaCart cart) {
+        logger.info("Запрошен конструктор для JpaProduct с параметрами: id: {}, isActive: {}, name: {}, cart: {} ",
+                id, isActive, name, cart);
         this.id = id;
         this.isActive = isActive;
         this.name = name;

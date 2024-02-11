@@ -51,7 +51,7 @@ public class JpaProductService implements ProductService {
             entity = repository.save(entity);
             return mappingService.mapProductEntityToDto(entity);
         } catch (Exception e) {
-            throw new FourthTestException(e.getMessage());
+            throw new ProductValidationException("Incorrect values of product fields ", e);
         }
 
     }
@@ -163,8 +163,7 @@ public class JpaProductService implements ProductService {
                 .filter(p -> p.isActive())
                 .count();
         if (count == 0) {
-            throw new NoActiveProductsException("");
-
+            throw new NoActiveProductsException("Нет активных продуктов!");
         } else return count;
     }
 

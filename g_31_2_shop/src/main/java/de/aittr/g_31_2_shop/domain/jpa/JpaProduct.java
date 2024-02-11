@@ -2,7 +2,10 @@ package de.aittr.g_31_2_shop.domain.jpa;
 
 import de.aittr.g_31_2_shop.domain.interfaces.Product;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -15,16 +18,22 @@ public class JpaProduct implements Product {
     private int id;
     @Column(name = "name")
     @NotNull
+    @NotEmpty
     private String name;
     @Column(name = "price")
     private double price;
     @Column(name = "is_active")
     private boolean isActive;
 
+    private static Logger logger = LoggerFactory.getLogger(JpaProduct.class);
+
     public JpaProduct() {
+        logger.info("Запрошен пустой конструктор для JpaProduct");
     }
 
     public JpaProduct(int id, String name, double price, boolean isActive) {
+        logger.info("Запрошен конструктор для JpaProduct с параметрами: id: {}, name: {}, price: {}, isActive: {}",
+                id, name, price, isActive);
         this.id = id;
         this.name = name;
         this.price = price;

@@ -66,6 +66,23 @@ public class ProductController {
         service.restoreById(id);
     }
 
+    @GetMapping("/count")
+    public int getCount(){
+        return service.getActiveProductCount();
+    }
+
+    @GetMapping("/price")
+    public double getPrice(){
+        return service.getActiveTotalPrice();
+    }
+
+    @GetMapping("/average")
+    public double getAveragePrice(){
+        return service.getActiveProductAveragePrice();
+    }
+
+
+
 
 
     /** первый способ создания метода-обработчика в контроллере, где мы ожидаем ошибки
