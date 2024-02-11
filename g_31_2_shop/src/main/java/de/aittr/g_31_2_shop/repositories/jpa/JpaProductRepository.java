@@ -26,5 +26,8 @@ public interface JpaProductRepository extends JpaRepository<JpaProduct, Integer>
 //    @Query(value = "UPDATE `31_2_shop`.`product` SET `is_active` = '1' WHERE (`id` = :id);", nativeQuery = true)
 //    void restoreById(@Param("id") int id);
 
+    @Query(value = "SELECT * FROM `31_2_shop`.`product` ORDER BY id DESC LIMIT 1;", nativeQuery = true)
+    JpaProduct getLastAddedProduct();
+
 
 }

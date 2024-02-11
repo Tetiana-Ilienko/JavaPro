@@ -58,8 +58,11 @@ public class JpaProductService implements ProductService {
 
     @Override
     public List<ProductDto> getAllActiveProducts() {
-        Task task = new Task("Method getAllActiveProducts called");
-        ScheduleExecutor.scheduleAndExecuteTask(task);
+        // создаем задачу, которая будет выполняться по расписанию
+//        Task task = new Task("Method getAllActiveProducts called");
+//        ScheduleExecutor.scheduleAndExecuteTask(task);
+
+
         /**здесь будет JoinPoint, сюда будет внедряться вспомогательный код (АОП, логирование) Before */
         return repository.findAll()
                 .stream()
@@ -194,4 +197,12 @@ public class JpaProductService implements ProductService {
             throw new NoActiveProductsException("Ошибка! Нет активных продуктов для вычисления средней цены.");
         }
     }
+
+    //TODO почему идея требует добавить метод в интерфейс? Иначе его не видно в контроллере.
+//    public ProductDto getLastAddedProduct(){
+//        JpaProduct product = repository.getLastAddedProduct();
+//        return mappingService.mapProductEntityToDto(product);
+//    }
+
+
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(name = "task")
 public class Task {
     @Column(name = "executed_at")
-    private Timestamp executedAt;
+    private Timestamp executedAt;// специальный тип даты времени, который взаимодействует с БД
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

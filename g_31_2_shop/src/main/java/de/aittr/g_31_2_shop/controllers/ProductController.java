@@ -1,6 +1,7 @@
 package de.aittr.g_31_2_shop.controllers;
 
 import de.aittr.g_31_2_shop.domain.dto.ProductDto;
+import de.aittr.g_31_2_shop.domain.jpa.JpaProduct;
 import de.aittr.g_31_2_shop.exeption_handling.Response;
 import de.aittr.g_31_2_shop.exeption_handling.exceptions.FirstTestException;
 import de.aittr.g_31_2_shop.services.interfaces.ProductService;
@@ -80,6 +81,13 @@ public class ProductController {
     public double getAveragePrice(){
         return service.getActiveProductAveragePrice();
     }
+
+//    @GetMapping("/last_added")
+//    public JpaProduct getLastProduct(){
+//        return service.getLastAddedProduct();
+//    }
+
+
 
 
 
